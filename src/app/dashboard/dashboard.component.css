@@ -1,0 +1,24 @@
+ul {
+  padding-left: 0;
+  margin-bottom: 3px;
+}
+.addBtn{
+  float: right;
+}
+.dragBox{
+  margin: 0 2px 22px 2px;
+}
+.float-right{
+  float: right;
+}
+.item{
+  margin-bottom: 20px;
+}
+.pointer{
+  cursor: pointer;
+}
+.emptyCdkDrag{
+  min-height: 20px;
+  font-size: 0.875em;
+  color: #6c757d;
+}

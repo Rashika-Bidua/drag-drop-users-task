@@ -1,0 +1,94 @@
+<div class="card">
+  <div class="card-header">
+    <b>Drag & Drop Assignment</b>
+    <a (click)="openUserModal()" class="btn btn-primary addBtn"><i class="fas fa-user-plus"></i></a>
+  </div>
+  <div class="card-body"></div>
+
+  <div class="row dragBox">
+    <div class="col-md-4 item" *ngFor="let user of userTaskArr; let i = index">
+      <div class="card">
+        <div class="card-header"> 
+          <a (click)="openUserEditModal(i)" >{{user.name}} <i class="fas fa-pencil-alt" ></i></a>
+          <a (click)="deleteUser(i)" class="float-right pointer" ><i class="text-danger fas fa-window-close"></i></a>
+        </div>
+        
+        <ul class="list-group list-group-flush "
+        cdkDropList 
+          id="{{user.name}}" 
+          [cdkDropListData]="user.taskList"
+          [cdkDropListConnectedTo]="getConnectedTo()"
+          class="item-list"
+          (cdkDropListDropped)="drop($event)"
+        
+        >
+          <li  *ngFor="let taskName of user.taskList; let j = index" cdkDrag class="list-group-item">
+            {{taskName}}
+            <a (click)="openTaskEditModal(i,j)" class="float-right" ><i class="fas fa-pencil-alt" ></i></a>
+          </li>
+          <div cdkDrag *ngIf="!user.taskList.length" class="emptyCdkDrag text-center" > -- No task -- </div>
+        </ul>
+        <a  (click)="openTaskModal(i)"  class="btn btn-primary col-md-2 text-center mx-auto"><i class="fas fa-plus"></i></a>
+      </div>
+    </div> 
+  </div>
+
+</div>
+
+
+<ng-template #userModelId let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title" >User Details</h4> 
+    <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="userForm" name="userForm" (ngSubmit)="saveUser()" >
+      
+      <div class="form-group">
+        <label class="col-form-label">User Name</label>
+        <input class="form-control" type="text" required="" formControlName="userName">
+          <span *ngIf="userForm.controls.userName.touched" class="text text-danger">
+            <span *ngIf="userForm.controls.userName.errors?.required" >
+              Name is required
+            </span>
+            <span *ngIf="userForm.controls.userName.errors?.incorrect" >
+              Already Exist
+            </span>
+        </span>
+      </div>
+      <div class="form-group  mt-2">
+        <button type="reset" class="btn btn-secondary" >clear</button>
+        <button type="submit" class="btn btn-success float-right" >Save</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+<ng-template #taskModelId let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title"> Task Details </h4>
+    <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="taskForm" name="taskForm" (ngSubmit)="saveTask()" >
+      
+      <div class="form-group">
+        <label class="col-form-label">Task Name</label>
+        <input class="form-control" type="text" required="" formControlName="taskName">
+          <span *ngIf="taskForm.controls.taskName.touched" class="text text-danger">
+            <span *ngIf="taskForm.controls.taskName.errors?.required" >
+              Task name is required
+            </span>
+        </span>
+      </div>
+      <div class="form-group  mt-2">
+        <button type="reset" class="btn btn-secondary" >clear</button>
+        <button type="submit" class="btn btn-success float-right" >Save</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
